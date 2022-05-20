@@ -1,13 +1,16 @@
-- name: Install Mailhog
+- name: Install and launch MailHog
   hosts: vm
+  become: true
   tasks:
+  - name : Install Screen
+    apt:
+      name: screen
+      state: present
   - name : Install GoLang
-    become: true
     apt:
       name: golang-go
       state : present
   - name : Install git
-    become: true
     apt :
       name : git
       state : present
@@ -16,20 +19,17 @@
       path: ~/go
       state: directory
       mode : '0755'
-  - set_fact:
+  - name : Set GOPATH
+    set_fact:
       go_path: "{{ lookup('env', 'GOPATH') | default(ansible_env.HOME+'/go', true) }}"
       when: not result|failed
   - name : Clone MailHog
-    ansible.builtin.command: go get github.com/mailhog/MailHog
+    ansible.builtin.command: go install github.com/mailhog/MailHog@latest
     environment:
       GOPATH: "{{ go_path }}"
   - name : Copy MailHog to bin directory
     ansible.builtin.command: sudo cp ~/go/bin/MailHog /usr/local/bin/Mailhog
-  - name : Start MailHog
-    ansible.builtin.command : Mailhog
-    register : out
-  - debug: var=out.stdout_lines
-  - meta: end_play
-
+  - name: Start MailHog
+    shell: screen -d -m Mailhog
 
 
