@@ -1,0 +1,21 @@
+---
+- hosts: testbed
+  become: true
+  become_user: root
+  
+  tasks:
+
+  - name: install default jdk
+    apt:
+      name: default-jdk
+      state: present
+
+  - name: download Keycloack tar
+    shell: sudo wget https://github.com/keycloak/keycloak/releases/download/18.0.0/keycloak-18.0.0.tar.gz -P /opt -N
+
+  - name: extract the package
+    shell: sudo tar -xvzf /opt/keycloak-18.0.0.tar.gz -C /opt
+
+  - name: run
+    #shell: cd /opt/keycloak-18.0.0/bin/
+    ansible.builtin.shell: cd /opt && .//keycloak-18.0.0/bin/kc.sh start-dev >> log.txt
