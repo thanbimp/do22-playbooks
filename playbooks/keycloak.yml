@@ -18,4 +18,4 @@
 
   - name: run
     #shell: cd /opt/keycloak-18.0.0/bin/
-    ansible.builtin.shell: cd /opt && .//keycloak-18.0.0/bin/kc.sh start-dev >> log.txt
+    shell: cd /opt/keycloak-18.0.0/bin/ && screen -d -m ./kc.sh start-dev >> log.txt
