@@ -1,0 +1,16 @@
+spring.datasource.url=jdbc:mysql://localhost:3306/devops_2022
+spring.datasource.username=springuser
+spring.datasource.password=thePassword
+email.email=noreply@recommend_letters.com
+email.smtp-port=1025
+email.smtp-auth=true
+email.smtp-s-s-l=true
+email.password=thePassword123
+email.smtp-server=localhost
+server.port=80
+server.error.include-stacktrace=always
+keycloak.realm=SpringBootKeycloak
+keycloak.resource=login-app
+keycloak.auth-server-url="{{public_ip.ansible_facts.ipify_public_ip}}":8080/
+keycloak.public-client=false
+keycloak.credentials.secret=dBHMLN1T3dctPqnE2ps4NBfsvqwrONvL

@@ -1,3 +1,4 @@
+---
 - name: Install and launch MailHog
   hosts: testbed
   become: true
