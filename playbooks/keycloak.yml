@@ -23,8 +23,8 @@
     ansible.builtin.template:
         src: keycloak_realm.j2
         dest: /opt/keycloak-18.0.0/realm.json
-        owner: thanb
-        group: thanb
+        owner: vagrant
+        group: vagrant
         mode: '0644'
 
   - name: import realm

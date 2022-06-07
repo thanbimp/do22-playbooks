@@ -22,8 +22,8 @@
       ansible.builtin.template:
         src: spring_boot.j2
         dest: ~/Recommendation-Letter-Service/application.properties
-        owner: thanb
-        group: thanb
+        owner: vagrant
+        group: vagrant
         mode: '0644'
     - name : Build jar
       shell : |
