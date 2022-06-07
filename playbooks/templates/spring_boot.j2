@@ -14,3 +14,5 @@ keycloak.resource=login-app
 keycloak.auth-server-url="{{public_ip.ansible_facts.ipify_public_ip}}":8080/
 keycloak.public-client=false
 keycloak.credentials.secret=dBHMLN1T3dctPqnE2ps4NBfsvqwrONvL
+spring.jpa.hibernate.ddl-auto=create
+spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect

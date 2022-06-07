@@ -27,3 +27,9 @@
 
     - name: create new sql user
       shell: sudo mysql -e "CREATE USER 'springuser'@'localhost' IDENTIFIED BY 'thePassword';"
+
+    - name: create sql database
+      shell: sudo mysql -e "CREATE DATABASE devops_22;"
+
+    - name: create sql database
+      shell: sudo mysql -e "GRANT ALL PRIVILEGES ON devops_22.* TO 'springuser'@'localhost';"
