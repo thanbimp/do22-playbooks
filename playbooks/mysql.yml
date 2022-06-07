@@ -31,5 +31,5 @@
     - name: create sql database
       shell: sudo mysql -e "CREATE DATABASE devops_22;"
 
-    - name: create sql database
+    - name: grant all privleges on new user on new database
       shell: sudo mysql -e "GRANT ALL PRIVILEGES ON devops_22.* TO 'springuser'@'localhost';"
