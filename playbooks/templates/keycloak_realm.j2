@@ -726,18 +726,31 @@
     {
       "id": "66b851d3-c9cf-4b33-b5af-8e675e12e66a",
       "clientId": "login-app",
+       {% if fqdn|length %}
+      "rootUrl": "http://{{fqdn}}:80",
+      {% else %}
       "rootUrl": "http://192.168.56.101:80",
+      {% endif %}
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "secret": "dBHMLN1T3dctPqnE2ps4NBfsvqwrONvL",
+      {% if fqdn|length %}
+      "redirectUris": [
+        "http://{{fqdn}}:80/*"
+      ],
+      "webOrigins": [
+        "http://{{fqdn}}:80"
+      ],
+      {% else %}
       "redirectUris": [
         "http://192.168.56.101:80/*"
       ],
       "webOrigins": [
         "http://192.168.56.101:80"
       ],
+      {% endif %}
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,

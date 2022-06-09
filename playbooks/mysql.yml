@@ -6,7 +6,7 @@
     mysql_root_password: password   
 
   tasks:   
-
+    
     - name: run apt-get update
       command: apt-get update
 
