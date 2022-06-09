@@ -2,6 +2,11 @@
 - hosts: testbed
   become: true
 
+  vars_prompt:
+  - name: fqdn
+    prompt: Please enter the fqdn that your app will be hosted in (leave blank for local ip)
+    private: no
+    
   tasks:
 
   - name: install default jdk

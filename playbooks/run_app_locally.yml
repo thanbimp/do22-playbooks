@@ -2,9 +2,7 @@
 
 - name: set up app to run locally
   hosts: all
-  vars_prompt:
-  - name: fqdn
-    prompt: Please enter the fqdn that your app will be hosted in (leave blank for local ip)
+  
 
 - import_playbook: mysql.yml
 - import_playbook: keycloak.yml

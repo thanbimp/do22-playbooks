@@ -41,8 +41,8 @@ EOF
       #h.vm.provision :--provision, "file", source: "../playbooks/roles/testbed/files/watcher.py", destination: "~/" 
     
     h.vm.provider "vm1" do |c|
-      c.memory = 1
-      c.cpus = 2
+      c.memory = 4
+      c.cpus = 4
     end
   end
 end
