@@ -727,9 +727,9 @@
       "id": "66b851d3-c9cf-4b33-b5af-8e675e12e66a",
       "clientId": "login-app",
        {% if fqdn is defined%}
-      "rootUrl": "http://{{fqdn}}",
+      "rootUrl": "http://{{fqdn}}/",
       {% else %}
-      "rootUrl": "http://192.168.56.101",
+      "rootUrl": "http://192.168.56.101/",
       {% endif %}
       "surrogateAuthRequired": false,
       "enabled": true,
@@ -741,14 +741,14 @@
         "http://{{fqdn}}/*"
       ],
       "webOrigins": [
-        "http://{{fqdn}}"
+        "http://{{fqdn}}/"
       ],
       {% else %}
       "redirectUris": [
         "http://192.168.56.101/*"
       ],
       "webOrigins": [
-        "http://192.168.56.101"
+        "http://192.168.56.101/"
       ],
       {% endif %}
       "notBefore": 0,
