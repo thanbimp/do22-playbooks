@@ -21,21 +21,31 @@ services:
         - "8025:8025"
 
   keycloak:
-    depends_on:
-      - mysql
     container_name: keycloak
     environment:
-      DB_VENDOR: mysql
-      DB_ADDR: mysql
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_PASSWORD: keycloak
+      DB_VENDOR: h2
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: password
+      KEYCLOAK_IMPORT: /opt/keycloak/realm.json
     image: jboss/keycloak:latest
+    volumes:
+            - '/home/vagrant/realm.json:/opt/keycloak/realm.json'
     ports:
       - "8080:8080"
+      - "9990:9990"
     restart: unless-stopped
     networks:
       - local-keycloak
+
+  spring-boot-app:
+    depends_on:
+      - mysql
+      - keycloak
+      - mailhog
+    container_name: spring_boot_app
+    image: spring_boot_app
+    ports:
+    - "80:80"
 
 networks:
   local-keycloak:

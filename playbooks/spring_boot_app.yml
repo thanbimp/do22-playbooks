@@ -1,11 +1,10 @@
 ---
-
 - name: Clone, build and run spring boot app
   hosts: testbed
   vars_prompt:
   - name: fqdn
     prompt: Please enter the fqdn that your app will be hosted in (leave blank for local ip)
-    private: no
+    private: false
   tasks:
     - name: Install git and JDK
       become: true

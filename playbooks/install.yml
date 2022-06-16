@@ -1,5 +1,9 @@
 ---
 - hosts: testbed
+  vars_prompt:
+  - name: fqdn
+    prompt: Please enter the fqdn that your app will be hosted in (leave blank for local ip)
+    private: false
   become: true
   gather_facts: false
   tasks:
@@ -74,5 +78,39 @@
     tags:
       - copy
 
+  - name: Clone git repository
+    shell: |
+        git clone https://github.com/thanbimp/Recommendation-Letter-Service
+        cd Recommendation-Letter-Service/
+        git checkout keycloak
+        chmod +x mvnw
+
+
+  - name: create application.properties file
+    ansible.builtin.template:
+        src: spring_boot_docker.j2
+        dest: /home/vagrant/Recommendation-Letter-Service/application.properties
+        owner: vagrant
+        group: vagrant
+        mode: '0644'
+
+  - name : Build jar
+    shell : |
+        cd Recommendation-Letter-Service/
+        ./mvnw package -DskipTests
+
+  - name: create realm json file
+    ansible.builtin.template:
+        src: keycloak_realm.j2
+        dest: /home/vagrant/realm.json
+        owner: vagrant
+        group: vagrant
+        mode: '0644'
+
+  - name: Build docker image
+    shell: cd Recommendation-Letter-Service/ && docker build ./ -t spring_boot_app
+
+
   - name: run the docker-compose file
-    shell: sudo docker-compose up -d
+    shell: docker-compose up -d
+
