@@ -1,0 +1,64 @@
+---
+- hosts: testbed
+  become: true
+  tasks:
+  - name: install microk8s  
+    shell: snap install microk8s --classic
+
+  - name: change the user permissions
+    shell: sudo usermod -a -G microk8s vagrant && sudo chown -f -R vagrant ~/.kube
+
+  - name: some name
+    copy:
+      src: kubernetes/keycloack.yml
+      dest: /home/keycloak.yml
+      mode: 0644
+    tags: 
+      - sh
+
+  - name: mysql secret
+    copy:
+      src: kubernetes/mysql_secret.yml
+      dest: /home/mysql_secret.yml
+      mode: 0644
+    tags: 
+      - sh
+
+  - name: mysql
+    copy:
+      src: kubernetes/mysql.yml
+      dest: /home/mysql.yml
+      mode: 0644
+    tags: 
+      - sh
+
+
+  - name: mysql-service
+    copy:
+      src: kubernetes/mysql-service.yml
+      dest: /home/mysql-service.yml
+      mode: 0644
+    tags: 
+      - sh
+
+
+  - name: mysql
+    copy:
+      src: kubernetes/mysql-pvc.yml
+      dest: /home/mysql-pvc.yml
+      mode: 0644
+    tags: 
+      - sh
+
+
+  - name: mysql
+    copy:
+      src: kubernetes/mysql-pv.yml
+      dest: /home/mysql-pv.yml
+      mode: 0644
+    tags: 
+      - sh
+
+  # - name: apply the deployment file
+  #   shell: microk8s kubectl apply k8s-deployment.yml
+
