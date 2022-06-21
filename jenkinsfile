@@ -1,5 +1,5 @@
 pipeline {
-    agent {k8s-deployment}
+    agent any
 
     stages {
         stage('k8s deployment'){
