@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('k8s deployment'){
             steps{
-                sh "snap install microk8s --classic"
+                sh "sudo snap install microk8s --classic"
 
                 sh "sudo usermod -a -G microk8s jenkins"
 
