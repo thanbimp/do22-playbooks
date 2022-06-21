@@ -47,3 +47,5 @@ spec:
           httpGet:
             path: /realms/master
             port: 8080
+
+#this runs in port 32534

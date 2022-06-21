@@ -1,0 +1,39 @@
+pipeline {
+    agent k8s-deployment
+
+    stages {
+        stage('k8s deployment'){
+            steps{
+                sh "snap install microk8s --classic"
+
+                sh "sudo usermod -a -G microk8s jenkins"
+
+                sh "sudo chown -f -R jenkins ~/.kube"
+
+                sh "newgrp microk8s"
+
+                sh "microk8s enable helm3"
+
+                sh "git clone https://github.com/Ancairon/do22-playbooks.git"
+
+                sh "cd do22-playbooks/"
+
+                sh "git checkout branch k8s"
+
+                sh "microk8s microk8s kubectl apply -f playbooks/files/kubernetes/keycloack.yml"
+
+                sh "mkdir mysql-kube"
+
+                sh "microk8s kubectl apply -f playbooks/files/kubernetes/mysql-pv.yml"
+
+                sh "microk8s kubectl apply -f playbooks/files/kubernetes/mysql-pvc.yml"
+            
+                sh "microk8s kubectl apply -f playbooks/files/kubernetes/mysql.yml"
+
+                sh "microk8s kubectl apply -f playbooks/files/kubernetes/mysql-service.yml  "
+
+                sh "microk8s helm3 repo add codecentric https://codecentric.github.io/helm-charts && microk8s helm3 install mailhog codecentric/mailhog"
+            }
+        }
+    }
+}
