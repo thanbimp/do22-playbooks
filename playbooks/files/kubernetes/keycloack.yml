@@ -1,25 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata:
-  name: keycloak
-  labels:
-    app: keycloak
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: keycloak
+      io.kompose.service: keycloak
+  strategy:
+    type: Recreate
   template:
-    metadata:
-      labels:
-        app: keycloak
     spec:
       containers:
         - env:
             - name: DB_VENDOR
               value: h2
             - name: KEYCLOAK_IMPORT
-              value: /home/jenkins/keycloak.json
+              value: /opt/keycloak/realm.json
             - name: KEYCLOAK_PASSWORD
               value: password
             - name: KEYCLOAK_USER
@@ -30,12 +25,22 @@ spec:
             - containerPort: 8080
           resources: {}
           volumeMounts:
-            - mountPath: /home/jenkins/keycloak.json
+            - mountPath: /opt/keycloak/realm.json
               name: keycloak-pvc
       restartPolicy: Always
       volumes:
         - name: keycloak-pvc
           persistentVolumeClaim:
             claimName: keycloak-pvc
-
-#this runs in port 32534
+status: {}
+---
+apiVersion: v1
+kind: Service
+name: keycloak
+spec:
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
+status:
+  loadBalancer: {}

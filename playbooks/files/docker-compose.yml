@@ -32,7 +32,6 @@ services:
             - '/home/vagrant/realm.json:/opt/keycloak/realm.json'
     ports:
       - "8080:8080"
-      - "9990:9990"
     restart: unless-stopped
     networks:
       - local-keycloak
