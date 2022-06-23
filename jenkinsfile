@@ -47,17 +47,16 @@ pipeline {
 
         stage ('Deploy Kubernetes'){
             steps{
-                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/keycloak-pvc.yaml"
+                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/keycloak-claim0-persistentvolumeclaim.yaml"
 
-                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/keycloack.yml"
+                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/keycloak-deployment.yaml"
 
-                sh "mkdir mysql-kube"
 
-                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/mysql-pv.yml"
+                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/keycloak-service.yaml"
 
-                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/mysql-pvc.yml"
+                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/local-keycloak-networkpolicy.yaml"
 
-                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/mysql.yml"
+                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/mailhog-deployment.yaml"
 
                 sh "microk8s.kubectl apply -f playbooks/files/kubernetes/mysql-service.yml"
 
