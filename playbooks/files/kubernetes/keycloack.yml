@@ -52,9 +52,5 @@ spec:
         - name: keycloak_pvc
           persistentVolumeClaim:
             claimName: keycloak_pvc
-      readinessProbe:
-        httpGet:
-          path: /realms/master
-          port: 8080
 
 #this runs in port 32534

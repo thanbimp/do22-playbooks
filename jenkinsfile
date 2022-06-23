@@ -5,6 +5,8 @@ pipeline {
             steps{
                 sh "sudo snap install microk8s --classic"
 
+                sh "sudo apt install docker.io"
+
                 sh "sudo usermod -a -G microk8s jenkins"
 
                 sh "sudo mkdir ~/.kube"
@@ -31,31 +33,31 @@ pipeline {
 
         stage ('Build application jar and image'){
             steps{
-                sh "cd Recommendation-Letter-Service"
 
-                sh "chmod +x mvnw"
+                sh "chmod +x Recommendation-Letter-Service/mvnw"
 
-                sh "./mvnw package -DskipTests"
+                sh "cd Recommendation-Letter-Service && ./mvnw package -DskipTests"
 
-                sh "docker build ./ -t spring_boot_app"
+                sh "sudo chmod 666 /var/run/docker.sock"
 
-                sh "cd .."
+                sh "cd Recommendation-Letter-Service && docker build ./ -t spring_boot_app"
+
             }
         }
 
         stage ('Deploy Kubernetes'){
             steps{
-                sh "microk8s microk8s kubectl apply -f playbooks/files/kubernetes/keycloack.yml"
+                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/keycloack.yml"
 
                 sh "mkdir mysql-kube"
 
-                sh "microk8s kubectl apply -f playbooks/files/kubernetes/mysql-pv.yml"
+                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/mysql-pv.yml"
 
-                sh "microk8s kubectl apply -f playbooks/files/kubernetes/mysql-pvc.yml"
+                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/mysql-pvc.yml"
 
-                sh "microk8s kubectl apply -f playbooks/files/kubernetes/mysql.yml"
+                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/mysql.yml"
 
-                sh "microk8s kubectl apply -f playbooks/files/kubernetes/mysql-service.yml"
+                sh "microk8s.kubectl apply -f playbooks/files/kubernetes/mysql-service.yml"
 
                 sh "microk8s helm3 repo add codecentric https://codecentric.github.io/helm-charts && microk8s helm3 install mailhog codecentric/mailhog"
 
