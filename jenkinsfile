@@ -51,7 +51,6 @@ pipeline {
 
                 sh "microk8s.kubectl apply -f playbooks/files/kubernetes/keycloak-deployment.yaml"
 
-
                 sh "microk8s.kubectl apply -f playbooks/files/kubernetes/keycloak-service.yaml"
 
                 sh "microk8s.kubectl apply -f playbooks/files/kubernetes/local-keycloak-networkpolicy.yaml"
