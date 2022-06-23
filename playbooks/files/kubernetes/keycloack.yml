@@ -46,11 +46,11 @@ spec:
           resources: {}
           volumeMounts:
             - mountPath: /home/jenkins/keycloak.json
-              name: keycloak_pvc
+              name: keycloak-pvc
       restartPolicy: Always
       volumes:
-        - name: keycloak_pvc
+        - name: keycloak-pvc
           persistentVolumeClaim:
-            claimName: keycloak_pvc
+            claimName: keycloak-pvc
 
 #this runs in port 32534
