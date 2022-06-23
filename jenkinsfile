@@ -25,7 +25,7 @@ pipeline {
             steps{
                 sh "mv playbooks/files/application.properties Recommendation-Letter-Service/application.properties"
 
-                sh "mv playbooks/files/keycloak_realm.json opt/keycloak/realm.json"
+                sh "cp playbooks/files/keycloak_realm.json /home/jenkins/keycloak.json"
             }
         }
 

@@ -34,7 +34,7 @@ spec:
             - name: DB_VENDOR
               value: h2
             - name: KEYCLOAK_IMPORT
-              value: /opt/keycloak/realm.json
+              value: /home/jenkins/keycloak.json
             - name: KEYCLOAK_PASSWORD
               value: password
             - name: KEYCLOAK_USER
@@ -45,7 +45,7 @@ spec:
             - containerPort: 8080
           resources: {}
           volumeMounts:
-            - mountPath: /opt/keycloak/realm.json
+            - mountPath: /home/jenkins/keycloak.json
               name: keycloak_pvc
       restartPolicy: Always
       volumes:
