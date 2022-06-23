@@ -1,25 +1,50 @@
 pipeline {
     agent any
-
     stages {
-        stage('k8s deployment'){
+        stage('Prepare machine for deployment'){
             steps{
                 sh "sudo snap install microk8s --classic"
 
                 sh "sudo usermod -a -G microk8s jenkins"
 
-                sh "sudo chown -f -R jenkins ~/.kube"
+                sh "sudo mkdir ~/.kube"
 
-                sh "newgrp microk8s"
+                sh "sudo chown -f -R jenkins ~/.kube"
 
                 sh "microk8s enable helm3"
 
-                sh "git clone https://github.com/Ancairon/do22-playbooks.git"
+            }
+        }
+        stage('Clone Repositories'){
+            steps{
+                sh "git clone -b keycloak https://github.com/thanbimp/Recommendation-Letter-Service.git"
+            }
+        }
 
-                sh "cd do22-playbooks/"
+        stage('Copy some files'){
+            steps{
+                sh "mv playbooks/files/application.properties Recommendation-Letter-Service/application.properties"
 
-                sh "git checkout branch k8s"
+                sh "mv playbooks/files/keycloak_realm.json opt/keycloak/realm.json"
+            }
+        }
 
+        stage ('Build application jar and image'){
+            steps{
+                sh "cd Recommendation-Letter-Service"
+
+                sh "chmod +x mvnw"
+
+                sh "./mvnw package -DskipTests"
+
+                sh "docker build ./ -t spring_boot_app"
+
+                sh "cd .."
+            }
+        }
+
+        stage ('Deploy Kubernetes'){
+            steps{
                 sh "microk8s microk8s kubectl apply -f playbooks/files/kubernetes/keycloack.yml"
 
                 sh "mkdir mysql-kube"
@@ -27,12 +52,13 @@ pipeline {
                 sh "microk8s kubectl apply -f playbooks/files/kubernetes/mysql-pv.yml"
 
                 sh "microk8s kubectl apply -f playbooks/files/kubernetes/mysql-pvc.yml"
-            
+
                 sh "microk8s kubectl apply -f playbooks/files/kubernetes/mysql.yml"
 
-                sh "microk8s kubectl apply -f playbooks/files/kubernetes/mysql-service.yml  "
+                sh "microk8s kubectl apply -f playbooks/files/kubernetes/mysql-service.yml"
 
                 sh "microk8s helm3 repo add codecentric https://codecentric.github.io/helm-charts && microk8s helm3 install mailhog codecentric/mailhog"
+
             }
         }
     }
